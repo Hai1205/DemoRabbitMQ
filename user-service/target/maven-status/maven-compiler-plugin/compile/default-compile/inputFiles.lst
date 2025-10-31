@@ -3,6 +3,4 @@ C:\Users\ASUS\Downloads\rabbitmq-topic-demo\user-service\src\main\java\com\examp
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\user-service\src\main\java\com\example\userservice\configs\RabbitConfig.java
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\user-service\src\main\java\com\example\userservice\UserApplication.java
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\user-service\src\main\java\com\example\userservice\dtos\requests\AuthRequest.java
-C:\Users\ASUS\Downloads\rabbitmq-topic-demo\user-service\src\main\java\com\example\userservice\dtos\rabbitmq\RabbitHeader.java
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\user-service\src\main\java\com\example\userservice\dtos\ResponseDto.java
-C:\Users\ASUS\Downloads\rabbitmq-topic-demo\user-service\src\main\java\com\example\userservice\dtos\rabbitmq\RabbitResponse.java

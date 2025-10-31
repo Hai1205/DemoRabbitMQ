@@ -8,7 +8,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import java.util.concurrent.CompletableFuture;
 import java.util.Map;
 
-import com.example.authservice.dtos.ResponseDto;
+import com.example.authservice.dtos.RPCResponse;
 import com.example.authservice.services.producers.AuthProducer;
 
 @RestController
@@ -20,8 +20,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public DeferredResult<ResponseEntity<ResponseDto>> login(@RequestBody Map<String, Object> req) {
-        DeferredResult<ResponseEntity<ResponseDto>> result = new DeferredResult<>();
+    public DeferredResult<ResponseEntity<RPCResponse>> login(@RequestBody Map<String, Object> req) {
+        DeferredResult<ResponseEntity<RPCResponse>> result = new DeferredResult<>();
         CompletableFuture.runAsync(() -> {
             try {
                 String email = (String) req.get("email");
@@ -35,7 +35,7 @@ public class AuthController {
                     return;
                 }
 
-                ResponseDto responseDto = (ResponseDto) resp;
+                RPCResponse responseDto = (RPCResponse) resp;
                 handleResponse(responseDto, result);
 
             } catch (Exception e) {
@@ -45,15 +45,15 @@ public class AuthController {
         return result;
     }
 
-    private void handleNullResponse(DeferredResult<ResponseEntity<ResponseDto>> result) {
+    private void handleNullResponse(DeferredResult<ResponseEntity<RPCResponse>> result) {
         logInfo("Authentication failed - null response");
         result.setResult(ResponseEntity
                 .status(401)
-                .body(new ResponseDto(401, "Invalid credentials", null)));
+                .body(new RPCResponse(401, "Invalid credentials", null)));
     }
 
     @SuppressWarnings("unchecked")
-    private void handleResponse(ResponseDto responseDto, DeferredResult<ResponseEntity<ResponseDto>> result) {
+    private void handleResponse(RPCResponse responseDto, DeferredResult<ResponseEntity<RPCResponse>> result) {
         if (responseDto.getCode() == 200) {
             Map<String, Object> user = (Map<String, Object>) responseDto.getData();
             logInfo("User logged in: " + user.get("email"));
@@ -62,11 +62,11 @@ public class AuthController {
         result.setResult(ResponseEntity.ok(responseDto));
     }
 
-    private void handleException(Exception e, DeferredResult<ResponseEntity<ResponseDto>> result) {
+    private void handleException(Exception e, DeferredResult<ResponseEntity<RPCResponse>> result) {
         logError("Error during authentication: " + e.getMessage(), e);
         result.setErrorResult(ResponseEntity
                 .status(500)
-                .body(new ResponseDto(500, "Internal server error", null)));
+                .body(new RPCResponse(500, "Internal server error", null)));
     }
 
     private void logInfo(String message) {
