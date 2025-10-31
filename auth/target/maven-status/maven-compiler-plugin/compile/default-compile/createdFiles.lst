@@ -1,0 +1,5 @@
+com\example\auth\UserDto.class
+com\example\auth\RabbitConfig.class
+com\example\auth\AuthApplication.class
+com\example\auth\AuthController.class
+com\example\auth\AuthRequest.class
