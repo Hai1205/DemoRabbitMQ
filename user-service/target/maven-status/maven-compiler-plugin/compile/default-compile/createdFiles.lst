@@ -1,0 +1,9 @@
+com\example\userservice\dtos\requests\AuthRequest.class
+com\example\userservice\UserApplication.class
+com\example\userservice\dtos\rabbitmq\RabbitHeader.class
+com\example\userservice\dtos\UserDto.class
+com\example\userservice\dtos\rabbitmq\RabbitHeader$RabbitHeaderBuilder.class
+com\example\userservice\services\consumers\UserConsumer.class
+com\example\userserviceservice\configs\RabbitConfig.class
+com\example\userservice\dtos\rabbitmq\RabbitResponse.class
+com\example\userservice\dtos\rabbitmq\RabbitResponse$RabbitResponseBuilder.class

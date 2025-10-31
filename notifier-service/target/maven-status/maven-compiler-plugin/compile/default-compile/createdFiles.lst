@@ -1,0 +1,8 @@
+com\example\notifierservice\dtos\rabbitmq\RabbitResponse$RabbitResponseBuilder.class
+com\example\notifierservice\dtos\rabbitmq\RabbitResponse.class
+com\example\notifierservice\dtos\UserDto.class
+com\example\notifierservice\services\consumers\NotifierConsumer.class
+com\example\notifierservice\NotifierApplication.class
+com\example\notifierservice\configs\RabbitConfig.class
+com\example\notifierservice\dtos\rabbitmq\RabbitHeader.class
+com\example\notifierservice\dtos\rabbitmq\RabbitHeader$RabbitHeaderBuilder.class

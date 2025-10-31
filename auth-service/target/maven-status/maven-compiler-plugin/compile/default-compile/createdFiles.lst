@@ -1,0 +1,10 @@
+com\example\authservice\AuthApplication.class
+com\example\authservice\dtos\rabbitmq\RabbitResponse.class
+com\example\authservice\configs\RabbitConfig.class
+com\example\authservice\dtos\UserDto.class
+com\example\authservice\dtos\rabbitmq\RabbitResponse$RabbitResponseBuilder.class
+com\example\authservice\services\producers\AuthProducer.class
+com\example\authservice\dtos\rabbitmq\RabbitHeader.class
+com\example\authservice\controllers\AuthController.class
+com\example\authservice\dtos\requests\AuthRequest.class
+com\example\authservice\dtos\rabbitmq\RabbitHeader$RabbitHeaderBuilder.class

@@ -1,5 +1,0 @@
-com\example\user\UserApplication.class
-com\example\user\UserDto.class
-com\example\user\RabbitConfig.class
-com\example\user\UserListener.class
-com\example\user\AuthRequest.class

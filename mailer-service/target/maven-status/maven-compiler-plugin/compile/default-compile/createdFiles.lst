@@ -1,0 +1,8 @@
+com\example\mailerservice\configs\RabbitConfig.class
+com\example\mailerservice\MailerApplication.class
+com\example\mailerservice\dtos\rabbitmq\RabbitResponse$RabbitResponseBuilder.class
+com\example\mailerservice\dtos\rabbitmq\RabbitHeader$RabbitHeaderBuilder.class
+com\example\mailerservice\dtos\rabbitmq\RabbitHeader.class
+com\example\mailerservice\dtos\rabbitmq\RabbitResponse.class
+com\example\mailerservice\services\consumers\MailConsumer.class
+com\example\mailerservice\dtos\UserDto.class

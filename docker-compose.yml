@@ -19,13 +19,13 @@ services:
       timeout: 20s
       retries: 10
 
-  auth:
+  auth-service:
     build:
-      context: ./auth
+      context: ./auth-service
       dockerfile: Dockerfile
-    container_name: auth
+    container_name: auth-service
     env_file:
-      - ./auth/.env
+      - ./auth-service/.env
     ports:
       - "8081:8081"
     depends_on:
@@ -34,13 +34,13 @@ services:
     networks:
       - app-network
 
-  user:
+  user-service:
     build:
-      context: ./user
+      context: ./user-service
       dockerfile: Dockerfile
-    container_name: user
+    container_name: user-service
     env_file:
-      - ./user/.env
+      - ./user-service/.env
     ports:
       - "8082:8082"
     depends_on:
@@ -49,13 +49,13 @@ services:
     networks:
       - app-network
 
-  mailer:
+  mailer-service:
     build:
-      context: ./mailer
+      context: ./mailer-service
       dockerfile: Dockerfile
-    container_name: mailer
+    container_name: mailer-service
     env_file:
-      - ./mailer/.env
+      - ./mailer-service/.env
     ports:
       - "8083:8083"
     depends_on:
@@ -63,13 +63,13 @@ services:
         condition: service_healthy
     networks:
       - app-network
-  notifier:
+  notifier-service:
     build:
-      context: ./notifier
+      context: ./notifier-service
       dockerfile: Dockerfile
-    container_name: notifier
+    container_name: notifier-service
     env_file:
-      - ./notifier/.env
+      - ./notifier-service/.env
     ports:
       - "8084:8084"
     depends_on:
