@@ -11,9 +11,7 @@ import org.springframework.amqp.support.converter.DefaultClassMapper;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.authservice.dtos.UserDto;
-
-import com.example.authservice.dtos.UserDto;
+import com.example.authservice.dtos.ResponseDto;
 
 @Configuration
 public class RabbitConfig {
@@ -23,12 +21,12 @@ public class RabbitConfig {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
         DefaultClassMapper classMapper = new DefaultClassMapper();
 
-        // Map user-service types to auth-service types
+        // Map user-service ResponseDto to auth-service ResponseDto
         Map<String, Class<?>> idClassMapping = new HashMap<>();
-        idClassMapping.put("com.example.userservice.dtos.UserDto", UserDto.class);
+        idClassMapping.put("com.example.userservice.dtos.ResponseDto", ResponseDto.class);
         classMapper.setIdClassMapping(idClassMapping);
 
-        // Trust all packages (alternative approach - less secure but simpler)
+        // Trust all packages (allows dynamic deserialization)
         classMapper.setTrustedPackages("*");
 
         converter.setClassMapper(classMapper);

@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 
-import com.example.authservice.dtos.requests.AuthRequest;
-import com.example.authservice.dtos.UserDto;
+import com.example.authservice.dtos.ResponseDto;
 import com.example.authservice.services.producers.AuthProducer;
 
 @RestController
@@ -20,28 +20,62 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public DeferredResult<ResponseEntity<?>> login(@RequestBody AuthRequest req) {
-        DeferredResult<ResponseEntity<?>> result = new DeferredResult<>();
+    public DeferredResult<ResponseEntity<ResponseDto>> login(@RequestBody Map<String, Object> req) {
+        DeferredResult<ResponseEntity<ResponseDto>> result = new DeferredResult<>();
         CompletableFuture.runAsync(() -> {
             try {
-                System.out.println("[AuthService] Received login request for: " + req.getEmail());
+                String email = (String) req.get("email");
+                logInfo("Received login request for: " + email);
+
                 Object resp = authProducer.authenticate(req);
-                System.out.println("[AuthService] Authentication response: " + resp);
+                logInfo("Authentication response: " + resp);
+
                 if (resp == null) {
-                    System.out.println("[AuthService] Authentication failed - null response");
-                    result.setResult(ResponseEntity.status(401).body("Invalid credentials"));
-                } else {
-                    UserDto userDto = (UserDto) resp;
-                    System.out.println("[AuthService] User logged in: " + userDto.getEmail());
-                    authProducer.publishLoginSuccess(userDto);
-                    result.setResult(ResponseEntity.ok(resp));
+                    handleNullResponse(result);
+                    return;
                 }
+
+                ResponseDto responseDto = (ResponseDto) resp;
+                handleResponse(responseDto, result);
+
             } catch (Exception e) {
-                System.err.println("[AuthService] Error during authentication: " + e.getMessage());
-                e.printStackTrace();
-                result.setErrorResult(ResponseEntity.status(500).body("Internal server error"));
+                handleException(e, result);
             }
         });
         return result;
     }
+
+    private void handleNullResponse(DeferredResult<ResponseEntity<ResponseDto>> result) {
+        logInfo("Authentication failed - null response");
+        result.setResult(ResponseEntity
+                .status(401)
+                .body(new ResponseDto(401, "Invalid credentials", null)));
+    }
+
+    @SuppressWarnings("unchecked")
+    private void handleResponse(ResponseDto responseDto, DeferredResult<ResponseEntity<ResponseDto>> result) {
+        if (responseDto.getCode() == 200) {
+            Map<String, Object> user = (Map<String, Object>) responseDto.getData();
+            logInfo("User logged in: " + user.get("email"));
+            authProducer.publishLoginSuccess(user);
+        }
+        result.setResult(ResponseEntity.ok(responseDto));
+    }
+
+    private void handleException(Exception e, DeferredResult<ResponseEntity<ResponseDto>> result) {
+        logError("Error during authentication: " + e.getMessage(), e);
+        result.setErrorResult(ResponseEntity
+                .status(500)
+                .body(new ResponseDto(500, "Internal server error", null)));
+    }
+
+    private void logInfo(String message) {
+        System.out.println("[AuthService] " + message);
+    }
+
+    private void logError(String message, Exception e) {
+        System.err.println("[AuthService] " + message);
+        e.printStackTrace();
+    }
+
 }

@@ -1,8 +1,7 @@
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\configs\RabbitConfig.java
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\controllers\AuthController.java
-C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\dtos\rabbitmq\RabbitResponse.java
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\AuthApplication.java
-C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\dtos\rabbitmq\RabbitHeader.java
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\dtos\UserDto.java
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\dtos\requests\AuthRequest.java
+C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\dtos\ResponseDto.java
 C:\Users\ASUS\Downloads\rabbitmq-topic-demo\auth-service\src\main\java\com\example\authservice\services\producers\AuthProducer.java

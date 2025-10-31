@@ -20,11 +20,7 @@ public class RabbitConfig {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
         DefaultClassMapper classMapper = new DefaultClassMapper();
         // allow classes in our com.example packages
-        classMapper.setTrustedPackages("com.example.*");
-        // if you want explicit id->class mapping you can set it here
-        Map<String, Class<?>> idMapping = new HashMap<>();
-        idMapping.put("com.example.authservice.UserDto", UserDto.class);
-        classMapper.setIdClassMapping(idMapping);
+        classMapper.setTrustedPackages("*");
         converter.setClassMapper(classMapper);
         return converter;
     }

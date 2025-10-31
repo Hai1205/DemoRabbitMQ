@@ -8,8 +8,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import java.util.Map;
 
-import com.example.userservice.dtos.requests.AuthRequest;
-import com.example.userservice.dtos.UserDto;
+import com.example.userservice.dtos.ResponseDto;
 
 @Component
 public class UserConsumer {
@@ -20,23 +19,27 @@ public class UserConsumer {
             "alice@example.com", "alicepwd");
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "auth.user.user-service.queue", durable = "true"), exchange = @Exchange(value = "auth.user.exchange", type = "topic"), key = "auth.user.authenticate.request"))
-    public UserDto handleAuth(@Payload AuthRequest req) {
+    public ResponseDto handleAuth(@Payload Map<String, Object> req) {
         try {
             Thread.sleep(15000); // 15 seconds
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             System.err.println("[UserService] Interrupted while waiting");
-            return null;
+            return new ResponseDto(500, "Internal server error", null);
         }
 
-        System.out.println("[UserService] Received auth request for: " + req.getEmail());
+        String email = (String) req.get("email");
+        String password = (String) req.get("password");
 
-        String pwd = users.get(req.getEmail());
-        if (pwd != null && pwd.equals(req.getPassword())) {
-            return new UserDto(1L, req.getEmail(), "Demo User");
+        System.out.println("[UserService] Received auth request for: " + email);
+
+        String pwd = users.get(email);
+        if (pwd != null && pwd.equals(password)) {
+            Map<String, Object> userData = Map.of("id", 1L, "email", email, "fullName", "Demo User");
+            return new ResponseDto(200, "Authentication successful", userData);
         }
 
-        System.out.println("[UserService] auth failed for: " + req.getEmail());
-        return null;
+        System.out.println("[UserService] auth failed for: " + email);
+        return new ResponseDto(401, "Invalid credentials", null);
     }
 }

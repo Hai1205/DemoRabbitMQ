@@ -19,10 +19,7 @@ public class RabbitConfig {
     public MessageConverter jsonMessageConverter() {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
         DefaultClassMapper classMapper = new DefaultClassMapper();
-        classMapper.setTrustedPackages("com.example.*");
-        Map<String, Class<?>> idMapping = new HashMap<>();
-        idMapping.put("com.example.authservice.UserDto", UserDto.class);
-        classMapper.setIdClassMapping(idMapping);
+        classMapper.setTrustedPackages("*");
         converter.setClassMapper(classMapper);
         return converter;
     }
