@@ -27,16 +27,15 @@ public class AuthController {
                 String email = (String) req.get("email");
                 logInfo("Received login request for: " + email);
 
-                Object resp = authProducer.authenticate(req);
-                logInfo("Authentication response: " + resp);
+                RPCResponse response = authProducer.authenticate(req);
+                logInfo("Authentication response: " + response);
 
-                if (resp == null) {
+                if (response == null) {
                     handleNullResponse(result);
                     return;
                 }
 
-                RPCResponse responseDto = (RPCResponse) resp;
-                handleResponse(responseDto, result);
+                handleResponse(response, result);
 
             } catch (Exception e) {
                 handleException(e, result);
@@ -52,11 +51,9 @@ public class AuthController {
                 .body(new RPCResponse(401, "Invalid credentials", null)));
     }
 
-    @SuppressWarnings("unchecked")
     private void handleResponse(RPCResponse responseDto, DeferredResult<ResponseEntity<RPCResponse>> result) {
         if (responseDto.getCode() == 200) {
             Map<String, Object> user = (Map<String, Object>) responseDto.getData();
-            logInfo("User logged in: " + user.get("email"));
             authProducer.publishLoginSuccess(user);
         }
         result.setResult(ResponseEntity.ok(responseDto));

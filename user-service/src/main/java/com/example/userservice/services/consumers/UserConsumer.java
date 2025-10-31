@@ -8,24 +8,23 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import java.util.Map;
 
-import com.example.userservice.dtos.ResponseDto;
+import com.example.userservice.dtos.RPCResponse;
 
 @Component
 public class UserConsumer {
 
-    // Hard-coded demo users
     private final Map<String, String> users = Map.of(
             "hai@example.com", "password123",
             "alice@example.com", "alicepwd");
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "auth.user.user-service.queue", durable = "true"), exchange = @Exchange(value = "auth.user.exchange", type = "topic"), key = "auth.user.authenticate.request"))
-    public ResponseDto handleAuth(@Payload Map<String, Object> req) {
+    public RPCResponse handleAuth(@Payload Map<String, Object> req) {
         try {
             Thread.sleep(15000); // 15 seconds
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             System.err.println("[UserService] Interrupted while waiting");
-            return new ResponseDto(500, "Internal server error", null);
+            return new RPCResponse(500, "Internal server error", null);
         }
 
         String email = (String) req.get("email");
@@ -36,10 +35,10 @@ public class UserConsumer {
         String pwd = users.get(email);
         if (pwd != null && pwd.equals(password)) {
             Map<String, Object> userData = Map.of("id", 1L, "email", email, "fullName", "Demo User");
-            return new ResponseDto(200, "Authentication successful", userData);
+            return new RPCResponse(200, "Authentication successful", userData);
         }
 
         System.out.println("[UserService] auth failed for: " + email);
-        return new ResponseDto(401, "Invalid credentials", null);
+        return new RPCResponse(401, "Invalid credentials", null);
     }
 }

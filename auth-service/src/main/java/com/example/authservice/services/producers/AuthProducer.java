@@ -1,11 +1,11 @@
 package com.example.authservice.services.producers;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
+
+import com.example.authservice.dtos.RPCResponse;
 
 @Component
 public class AuthProducer {
@@ -15,12 +15,17 @@ public class AuthProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public Object authenticate(Map<String, Object> req) {
-        return rabbitTemplate.convertSendAndReceive("auth.user.exchange",
-                "auth.user.authenticate.request", req);
+    public RPCResponse authenticate(Map<String, Object> req) {
+        String exchange = "auth.user.exchange";
+        String routingKey = "auth.user.authenticate.request";
+        
+        return (RPCResponse) rabbitTemplate.convertSendAndReceive(exchange, routingKey, req);
     }
 
-    public void publishLoginSuccess(Map<String, Object> user) {
-        rabbitTemplate.convertAndSend("auth.authenticate.exchange", "auth.authenticate.login.success", user);
+    public void publishLoginSuccess(Map<String, Object> req) {
+        String exchange = "auth.authenticate.exchange";
+        String routingKey = "auth.authenticate.login.success";
+
+        rabbitTemplate.convertAndSend(exchange, routingKey, req);
     }
 }
